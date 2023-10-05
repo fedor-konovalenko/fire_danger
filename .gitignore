@@ -1,0 +1,10 @@
+raw/
+src/
+tmp/
+.idea/
+*.pdf
+*.pptx
+*.png
+*.jpg
+*.jpeg
+*.bmp

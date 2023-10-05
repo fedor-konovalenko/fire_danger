@@ -3,6 +3,7 @@ src/
 tmp/
 .idea/
 *.pdf
+*.PDF
 *.pptx
 *.png
 *.jpg

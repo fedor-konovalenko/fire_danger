@@ -16,7 +16,7 @@ import cv2
 from matplotlib import pyplot as plt
 import time
 
-"""##  Глобальные переменные и пути к данным"""
+"""##  Глобальные переменные, пути к данным"""
 
 dataDir = 'drive/MyDrive/Colab Notebooks/aviavision/fire_2509/' # изображения из тренировочной выборки
 

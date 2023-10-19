@@ -85,14 +85,8 @@ def main_v():
 
 
 def main():
-    # for filename in os.listdir(sourceDir):
-        # try:
-        #    frame = cv2.imread(sourceDir + filename)
-        # except FileNotFoundError:
-        #    app_logger.error(f'Cannot open file')
-        #    pass
     while True:
-        capture = cv2.VideoCapture(0)
+        capture = cv2.VideoCapture(2)
         app_logger.info(f'connection with camera - OK')
         if not capture.isOpened():
             app_logger.error(f'Cannot open camera')

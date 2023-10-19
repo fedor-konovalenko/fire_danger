@@ -16,7 +16,7 @@ app_logger.addHandler(app_handler)
 dataDir = 'tmp/'
 rawDir = 'raw/'
 sourceDir = 'src/'
-ALARM = 250
+ALARM = 253
 
 
 def cont_found(img: np.array):
@@ -32,13 +32,15 @@ def cont_found(img: np.array):
     contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
     good_contours = []
     for c in contours:
-        if cv2.arcLength(c, True) >= .025 * img.shape[1]:
-            good_contours.append(c)
+        approx = cv2.approxPolyDP(c, .02 * cv2.arcLength(c, True), True)
+        if cv2.arcLength(approx, True) >= .025 * img.shape[1]:
+            good_contours.append(approx)
     return good_contours, img2
 
 
 def cut(img: np.array, contours: list) -> tuple:
     """cut image and count brightness"""
+    log = open('counter.txt', 'a')
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     hot_contours = []
     fire = 0
@@ -52,10 +54,12 @@ def cut(img: np.array, contours: list) -> tuple:
         if br > ALARM:
             fire += 1
             hot_contours.append(c)
+    log.write(f'found {fire} fire dangerous heat sources \n')
+    log.close()
     return len(contours), fire, hot_contours
 
 
-def main_v():
+def main():
     while True:
         capture = cv2.VideoCapture(2)
         app_logger.info(f'connection with camera - OK')
@@ -76,6 +80,9 @@ def main_v():
             for fb in f_boxes:
                 pic = cv2.rectangle(frame, (fb[0], fb[1]), (fb[2], fb[3]), (0, 255, 0), 2)
             cv2.imwrite(f'{dataDir}frame_{dt.datetime.now()}.png', pic)
+        cv2.imshow('picture', pic)
+        cv2.waitKey()
+        cv2.destroyWindow('picture')
         stop = time.time()
         duration = stop - start
         message = f'found {count} heat sources, fire dangerous - {f_count}'
@@ -85,7 +92,7 @@ def main_v():
         time.sleep(1.0)
 
 
-def main():
+def main_d():
     for filename in os.listdir(sourceDir):
         # try:
         #    frame = cv2.imread(sourceDir + filename)

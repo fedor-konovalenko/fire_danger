@@ -16,7 +16,7 @@ app_logger.addHandler(app_handler)
 dataDir = 'tmp/'
 rawDir = 'raw/'
 sourceDir = 'src/'
-ALARM = 250
+ALARM = 253
 
 
 def cont_found(img: np.array):
@@ -42,7 +42,6 @@ def cut(img: np.array, contours: list) -> tuple:
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     hot_contours = []
     fire = 0
-    i = 0
     for c in contours:
         area = img
         mask = np.zeros(img.shape, dtype=np.uint8)
@@ -57,7 +56,7 @@ def cut(img: np.array, contours: list) -> tuple:
 
 def main_v():
     while True:
-        capture = cv2.VideoCapture(2)
+        capture = cv2.VideoCapture(0)
         app_logger.info(f'connection with camera - OK')
         if not capture.isOpened():
             app_logger.error(f'Cannot open camera')
@@ -86,14 +85,20 @@ def main_v():
 
 
 def main():
-    for filename in os.listdir(sourceDir):
+    # for filename in os.listdir(sourceDir):
         # try:
         #    frame = cv2.imread(sourceDir + filename)
         # except FileNotFoundError:
         #    app_logger.error(f'Cannot open file')
         #    pass
-
-        frame = cv2.imread(sourceDir + filename)
+    while True:
+        capture = cv2.VideoCapture(0)
+        app_logger.info(f'connection with camera - OK')
+        if not capture.isOpened():
+            app_logger.error(f'Cannot open camera')
+            exit()
+        ret, frame = capture.read()
+        app_logger.info(f'frame successfully captured')
         start = time.time()
         conts, contrast = cont_found(frame)
         count, f_count, f_conts = cut(contrast, conts)
@@ -102,10 +107,15 @@ def main():
             pic = cv2.drawContours(pic, f_conts, -1, (0, 50, 255), 3)
             cv2.imwrite(f'{dataDir}frame_{dt.datetime.now()}.png', pic)
         stop = time.time()
+        cv2.imshow('result', pic)
+        cv2.waitKey()
+        cv2.destroyAllWindows()
         duration = stop - start
         message = f'found {count} heat sources, fire dangerous - {f_count}'
         app_logger.info(message)
         app_logger.info(f"processing lasts {duration}\n")
+        capture.release()
+        time.sleep(1.0)
         # time.sleep(1.0)
 
 

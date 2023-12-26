@@ -9,3 +9,5 @@ tmp/
 *.jpg
 *.jpeg
 *.bmp
+!1.png
+!2.png

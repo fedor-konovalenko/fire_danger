@@ -14,11 +14,11 @@ ____________
 
 ## Результаты
 
-<img src="https://github.com/fedor-konovalenko/YPTeam_samolet/blob/main/pictures/ssd300.jpg" width="750" height="500">
+<img src="https://github.com/fedor-konovalenko/fire_danger/blob/main/pic/1.png" width="500" height="500">
 
 *Open CV*
 
-<img src="https://github.com/fedor-konovalenko/YPTeam_samolet/blob/main/pictures/ssd300.jpg" width="750" height="500">
+<img src="https://github.com/fedor-konovalenko/fire_danger/blob/main/pic/2.png" width="500" height="500">
 
 *SSD300-VGG16*
 
